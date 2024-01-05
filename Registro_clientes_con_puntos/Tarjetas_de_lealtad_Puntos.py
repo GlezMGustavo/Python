@@ -52,6 +52,15 @@ class ClienteApp:
         self.label_cantidad_puntos = ttk.Label(root, text="Cantidad de Puntos:")
         self.entry_cantidad_puntos = ttk.Entry(root)
 
+        # Crear cuadros de búsqueda
+        self.entry_buscar_id = ttk.Entry(root)
+        self.entry_buscar_nombre = ttk.Entry(root)
+        self.entry_buscar_telefono = ttk.Entry(root)
+
+        self.label_buscar_id = ttk.Label(root, text="Buscar por ID:")
+        self.label_buscar_nombre = ttk.Label(root, text="Buscar por Nombre:")
+        self.label_buscar_telefono = ttk.Label(root, text="Buscar por Teléfono:")
+
         # Posicionar widgets en la interfaz
         self.label_nombre.grid(row=0, column=0, padx=5, pady=5, sticky="E")
         self.label_telefono.grid(row=1, column=0, padx=5, pady=5, sticky="E")
@@ -72,6 +81,20 @@ class ClienteApp:
 
         self.label_cantidad_puntos.grid(row=8, column=0, pady=5)
         self.entry_cantidad_puntos.grid(row=8, column=1, pady=5)
+
+        self.label_buscar_id.grid(row=9, column=0, pady=5)
+        self.entry_buscar_id.grid(row=9, column=1, pady=5)
+
+        self.label_buscar_nombre.grid(row=10, column=0, pady=5)
+        self.entry_buscar_nombre.grid(row=10, column=1, pady=5)
+
+        self.label_buscar_telefono.grid(row=11, column=0, pady=5)
+        self.entry_buscar_telefono.grid(row=11, column=1, pady=5)
+
+        # Asignar eventos de teclado para activar los filtros
+        self.entry_buscar_id.bind("<KeyRelease>", lambda event: self.filtrar_registros(event, column="ID"))
+        self.entry_buscar_nombre.bind("<KeyRelease>", lambda event: self.filtrar_registros(event, column="Nombre"))
+        self.entry_buscar_telefono.bind("<KeyRelease>", lambda event: self.filtrar_registros(event, column="Teléfono"))
 
     def agregar_cliente(self):
         nombre = self.entry_nombre.get()
@@ -154,6 +177,30 @@ class ClienteApp:
             self.entry_cantidad_puntos.delete(0, "end")
         else:
             print("Por favor, seleccione un cliente y proporcione una cantidad válida de puntos para eliminar.")
+
+    def filtrar_registros(self, event, column):
+        valor = event.widget.get()
+
+        if column == "ID":
+            columna_bd = "id"
+        elif column == "Nombre":
+            columna_bd = "nombre"
+        elif column == "Teléfono":
+            columna_bd = "telefono"
+        else:
+            return
+
+        self.tree.delete(*self.tree.get_children())
+
+        if valor:
+            self.c.execute(f"SELECT * FROM clientes WHERE {columna_bd} LIKE ?", ('%' + valor + '%',))
+        else:
+            self.c.execute("SELECT * FROM clientes")
+
+        clientes = self.c.fetchall()
+
+        for cliente in clientes:
+            self.tree.insert("", "end", values=cliente)
 
     def limpiar_campos(self):
         self.entry_nombre.delete(0, "end")
