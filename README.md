@@ -1,2 +1,2 @@
-# Pyton
+# Python
 Codigos varios de Python
