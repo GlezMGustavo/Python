@@ -70,26 +70,25 @@ class ClienteApp:
         self.entry_telefono.grid(row=1, column=1, padx=5, pady=5)
         self.entry_puntos.grid(row=2, column=1, padx=5, pady=5)
 
-        self.btn_agregar.grid(row=3, column=0, columnspan=2, pady=10)
-        self.btn_eliminar.grid(row=4, column=0, columnspan=2, pady=10)
+        self.btn_agregar.grid(row=3, column=0, columnspan=1, pady=10)
+        self.btn_eliminar.grid(row=4, column=0, columnspan=1, pady=10)
 
-        self.tree.grid(row=5, column=0, columnspan=2, pady=10)
+        self.tree.grid(row=6, column=0, columnspan=2, pady=10)
 
-        self.label_operaciones.grid(row=6, column=0, columnspan=2, pady=10)
-        self.btn_anadir_puntos.grid(row=7, column=0, pady=5)
-        self.btn_eliminar_puntos.grid(row=7, column=1, pady=5)
+        self.label_operaciones.grid(row=7, column=0, columnspan=2, pady=10)
+        self.btn_anadir_puntos.grid(row=9, column=0, pady=5)
+        self.btn_eliminar_puntos.grid(row=9, column=1, pady=5)
 
         self.label_cantidad_puntos.grid(row=8, column=0, pady=5)
         self.entry_cantidad_puntos.grid(row=8, column=1, pady=5)
 
-        self.label_buscar_id.grid(row=9, column=0, pady=5)
-        self.entry_buscar_id.grid(row=9, column=1, pady=5)
+        self.label_buscar_id.grid(row=10, column=0, padx=1, pady=5)
+        self.label_buscar_nombre.grid(row=10, column=1, padx=1, pady=5)
+        self.label_buscar_telefono.grid(row=10, column=2, padx=1, pady=5)
 
-        self.label_buscar_nombre.grid(row=10, column=0, pady=5)
-        self.entry_buscar_nombre.grid(row=10, column=1, pady=5)
-
-        self.label_buscar_telefono.grid(row=11, column=0, pady=5)
-        self.entry_buscar_telefono.grid(row=11, column=1, pady=5)
+        self.entry_buscar_id.grid(row=11, column=0, pady=5)
+        self.entry_buscar_nombre.grid(row=11, column=1, pady=5)
+        self.entry_buscar_telefono.grid(row=11, column=2, pady=5)
 
         # Asignar eventos de teclado para activar los filtros
         self.entry_buscar_id.bind("<KeyRelease>", lambda event: self.filtrar_registros(event, column="ID"))
