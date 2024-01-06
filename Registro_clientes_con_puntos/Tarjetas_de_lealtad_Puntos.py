@@ -4,6 +4,7 @@ import sqlite3
 import random
 from ttkthemes import ThemedStyle
 
+
 class ClienteApp:
     def __init__(self, root):
         self.root = root
@@ -41,10 +42,14 @@ class ClienteApp:
         self.entry_telefono.grid(row=1, column=1, padx=(0, 10), pady=5, sticky="EW")
         self.entry_puntos.grid(row=2, column=1, padx=(0, 10), pady=5, sticky="EW")
 
-        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=1, padx=(10, 0), pady=(10, 5), sticky="EW")
-        ttk.Button(root, text="Eliminar Cliente", command=self.eliminar_cliente).grid(row=3, column=1, columnspan=1, padx=(0, 10), pady=10, sticky="EW")
-        ttk.Button(root, text="Actualizar Cliente", command=self.actualizar_cliente).grid(row=4, column=0, padx=(10, 0), pady=(0, 10), sticky="EW")
-
+        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=1,
+                                                                                    padx=(10, 0), pady=(10, 5),
+                                                                                    sticky="EW")
+        ttk.Button(root, text="Eliminar Cliente", command=self.eliminar_cliente).grid(row=3, column=1, columnspan=1,
+                                                                                      padx=(0, 10), pady=10,
+                                                                                      sticky="EW")
+        ttk.Button(root, text="Actualizar Cliente", command=self.actualizar_cliente).grid(row=4, column=0, padx=(10, 0),
+                                                                                          pady=(0, 10), sticky="EW")
 
         # Crear widgets para añadir y eliminar puntos
         ttk.Label(root, text="Operaciones:").grid(row=0, column=2, columnspan=2, pady=10)
@@ -53,13 +58,11 @@ class ClienteApp:
         self.entry_cantidad_puntos.grid(row=1, column=3, padx=(0, 10), pady=5, sticky="EW")
 
         ttk.Button(root, text="Añadir Puntos", command=self.anadir_puntos).grid(row=2, column=2, pady=5, sticky="EW")
-        ttk.Button(root, text="Eliminar Puntos", command=self.eliminar_puntos).grid(row=2, column=3, padx=(0, 10), pady=5, sticky="EW")
+        ttk.Button(root, text="Eliminar Puntos", command=self.eliminar_puntos).grid(row=2, column=3, padx=(0, 10),
+                                                                                    pady=5, sticky="EW")
 
         # Crear cuadros de búsqueda
         ttk.Label(root, text="Buscar:").grid(row=5, column=0, padx=(10, 0), pady=5, sticky="EW")
-        # ttk.Label(root, text="ID:").grid(row=5, column=0, pady=5)
-        # ttk.Label(root, text="Nombre:").grid(row=5, column=1, pady=5)
-        # ttk.Label(root, text="Teléfono:").grid(row=5, column=2, pady=5)
 
         self.entry_buscar_id = ttk.Entry(root)
         self.entry_buscar_nombre = ttk.Entry(root)
@@ -91,6 +94,7 @@ class ClienteApp:
         for i in range(11):
             self.root.grid_rowconfigure(i, weight=1)
             self.root.grid_columnconfigure(i, weight=1)
+
     def agregar_cliente(self):
         nombre = self.entry_nombre.get()
         telefono = self.entry_telefono.get()
@@ -145,6 +149,7 @@ class ClienteApp:
             self.listar_clientes()
         else:
             print("Por favor, seleccione un cliente para eliminar.")
+
     #  comentario
     def anadir_puntos(self):
         seleccion = self.tree.selection()
@@ -232,6 +237,7 @@ class ClienteApp:
         self.entry_nombre.delete(0, "end")
         self.entry_telefono.delete(0, "end")
         self.entry_puntos.delete(0, "end")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
