@@ -3,6 +3,7 @@ from tkinter import ttk
 import sqlite3
 import random
 from ttkthemes import ThemedStyle
+from tkinter import messagebox
 
 
 class ClienteApp:
@@ -109,7 +110,7 @@ class ClienteApp:
             self.listar_clientes()
             self.limpiar_campos()
         else:
-            print("Por favor, complete todos los campos.")
+            messagebox.showwarning("Error", "Por favor, complete todos los campos.")
 
     def generar_id_unico(self):
         while True:
@@ -139,16 +140,20 @@ class ClienteApp:
         # Obtener el ID seleccionado
         seleccion = self.tree.selection()
         if seleccion:
-            id_cliente = self.tree.item(seleccion, "values")[0]
+            # Mostrar cuadro de diálogo de confirmación
+            respuesta = messagebox.askokcancel("Confirmar eliminación", "¿Estás seguro de que deseas eliminar este cliente?")
 
-            # Eliminar el cliente de la base de datos
-            self.c.execute("DELETE FROM clientes WHERE id=?", (id_cliente,))
-            self.conn.commit()
+            if respuesta:
+                id_cliente = self.tree.item(seleccion, "values")[0]
 
-            # Actualizar la lista
-            self.listar_clientes()
+                # Eliminar el cliente de la base de datos
+                self.c.execute("DELETE FROM clientes WHERE id=?", (id_cliente,))
+                self.conn.commit()
+
+                # Actualizar la lista
+                self.listar_clientes()
         else:
-            print("Por favor, seleccione un cliente para eliminar.")
+            messagebox.showwarning("Error", "Por favor, selecciona un cliente para eliminar.")
 
     #  comentario
     def anadir_puntos(self):
@@ -162,7 +167,7 @@ class ClienteApp:
             self.listar_clientes()
             self.entry_cantidad_puntos.delete(0, "end")
         else:
-            print("Por favor, seleccione un cliente y proporcione una cantidad válida de puntos.")
+            messagebox.showwarning("Error", "Por favor, seleccione un cliente y proporcione una cantidad válida de puntos.")
 
     def eliminar_puntos(self):
         seleccion = self.tree.selection()
@@ -176,7 +181,7 @@ class ClienteApp:
             self.listar_clientes()
             self.entry_cantidad_puntos.delete(0, "end")
         else:
-            print("Por favor, seleccione un cliente y proporcione una cantidad válida de puntos para eliminar.")
+            messagebox.showwarning("Error", "Por favor, seleccione un cliente y proporcione una cantidad válida de puntos para eliminar.")
 
     def filtrar_registros(self, event, column):
         valor = event.widget.get()
@@ -218,9 +223,9 @@ class ClienteApp:
                 self.listar_clientes()
                 self.limpiar_campos()
             else:
-                print("Por favor, complete todos los campos.")
+                messagebox.showwarning("Error", "Por favor, complete todos los campos.")
         else:
-            print("Por favor, seleccione un cliente para actualizar.")
+            messagebox.showwarning("Error", "Por favor, seleccione un cliente para actualizar.")
 
     def on_cliente_seleccionado(self, event):
         seleccion = self.tree.selection()

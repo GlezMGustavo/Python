@@ -17,6 +17,6 @@ En la sección Operaciones, al seleccionar un cliente, puedes:
 
 Además, se ofrece la capacidad de filtrar la lista mediante cuadros de diálogo sobre cada columna, permitiendo búsquedas rápidas por ID, Nombre o Teléfono.
 
-## Captura de pantalla
+## Captura de Pantalla
 
 ![Imagen](Captura_Tarjeta_lealtad-1.png)
