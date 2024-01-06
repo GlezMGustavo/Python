@@ -41,8 +41,10 @@ class ClienteApp:
         self.entry_telefono.grid(row=1, column=1, padx=(0, 10), pady=5, sticky="EW")
         self.entry_puntos.grid(row=2, column=1, padx=(0, 10), pady=5, sticky="EW")
 
-        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=1, padx=(10, 0), pady=10, sticky="EW")
+        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=1, padx=(10, 0), pady=(10, 5), sticky="EW")
         ttk.Button(root, text="Eliminar Cliente", command=self.eliminar_cliente).grid(row=3, column=1, columnspan=1, padx=(0, 10), pady=10, sticky="EW")
+        ttk.Button(root, text="Actualizar Cliente", command=self.actualizar_cliente).grid(row=4, column=0, padx=(10, 0), pady=(0, 10), sticky="EW")
+
 
         # Crear widgets para añadir y eliminar puntos
         ttk.Label(root, text="Operaciones:").grid(row=0, column=2, columnspan=2, pady=10)
@@ -54,7 +56,7 @@ class ClienteApp:
         ttk.Button(root, text="Eliminar Puntos", command=self.eliminar_puntos).grid(row=2, column=3, padx=(0, 10), pady=5, sticky="EW")
 
         # Crear cuadros de búsqueda
-        ttk.Label(root, text="Buscar:").grid(row=4, column=0, padx=(10, 0), pady=5, sticky="EW")
+        ttk.Label(root, text="Buscar:").grid(row=5, column=0, padx=(10, 0), pady=5, sticky="EW")
         # ttk.Label(root, text="ID:").grid(row=5, column=0, pady=5)
         # ttk.Label(root, text="Nombre:").grid(row=5, column=1, pady=5)
         # ttk.Label(root, text="Teléfono:").grid(row=5, column=2, pady=5)
@@ -73,6 +75,7 @@ class ClienteApp:
         self.tree.heading("Nombre", text="Nombre")
         self.tree.heading("Teléfono", text="Teléfono")
         self.tree.heading("Puntos", text="Puntos")
+        self.tree.bind("<ButtonRelease-1>", self.on_cliente_seleccionado)
         self.listar_clientes()
         self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="NSEW")
 
@@ -193,6 +196,37 @@ class ClienteApp:
 
         for cliente in clientes:
             self.tree.insert("", "end", values=cliente)
+
+    def actualizar_cliente(self):
+        seleccion = self.tree.selection()
+        if seleccion:
+            id_cliente = self.tree.item(seleccion, "values")[0]
+            nombre = self.entry_nombre.get()
+            telefono = self.entry_telefono.get()
+            puntos = self.entry_puntos.get()
+
+            if nombre and telefono and puntos:
+                self.c.execute('''
+                    UPDATE clientes SET nombre=?, telefono=?, puntos=? WHERE id=?
+                ''', (nombre, telefono, puntos, id_cliente))
+                self.conn.commit()
+                self.listar_clientes()
+                self.limpiar_campos()
+            else:
+                print("Por favor, complete todos los campos.")
+        else:
+            print("Por favor, seleccione un cliente para actualizar.")
+
+    def on_cliente_seleccionado(self, event):
+        seleccion = self.tree.selection()
+        if seleccion:
+            cliente = self.tree.item(seleccion, "values")
+            self.entry_nombre.delete(0, "end")
+            self.entry_telefono.delete(0, "end")
+            self.entry_puntos.delete(0, "end")
+            self.entry_nombre.insert(0, cliente[1])
+            self.entry_telefono.insert(0, cliente[2])
+            self.entry_puntos.insert(0, cliente[3])
 
     def limpiar_campos(self):
         self.entry_nombre.delete(0, "end")
