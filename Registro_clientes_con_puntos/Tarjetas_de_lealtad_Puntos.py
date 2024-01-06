@@ -29,20 +29,43 @@ class ClienteApp:
         self.conn.commit()
 
         # Crear widgets
-        ttk.Label(root, text="Nombre:").grid(row=0, column=0, padx=5, pady=5, sticky="E")
-        ttk.Label(root, text="Teléfono:").grid(row=1, column=0, padx=5, pady=5, sticky="E")
-        ttk.Label(root, text="Puntos:").grid(row=2, column=0, padx=5, pady=5, sticky="E")
+        ttk.Label(root, text="Nombre:").grid(row=0, column=0, pady=5, sticky="E")
+        ttk.Label(root, text="Teléfono:").grid(row=1, column=0, padx=1, pady=5, sticky="E")
+        ttk.Label(root, text="Puntos:").grid(row=2, column=0, padx=1, pady=5, sticky="E")
 
         self.entry_nombre = ttk.Entry(root)
         self.entry_telefono = ttk.Entry(root)
         self.entry_puntos = ttk.Entry(root)
 
-        self.entry_nombre.grid(row=0, column=1, padx=5, pady=5)
-        self.entry_telefono.grid(row=1, column=1, padx=5, pady=5)
-        self.entry_puntos.grid(row=2, column=1, padx=5, pady=5)
+        self.entry_nombre.grid(row=0, column=1, padx=(0, 10), pady=5, sticky="EW")
+        self.entry_telefono.grid(row=1, column=1, padx=(0, 10), pady=5, sticky="EW")
+        self.entry_puntos.grid(row=2, column=1, padx=(0, 10), pady=5, sticky="EW")
 
-        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=2, pady=10, sticky="EW")
-        ttk.Button(root, text="Eliminar Cliente", command=self.eliminar_cliente).grid(row=4, column=0, columnspan=2, pady=10, sticky="EW")
+        ttk.Button(root, text="Agregar Cliente", command=self.agregar_cliente).grid(row=3, column=0, columnspan=1, padx=(10, 0), pady=10, sticky="EW")
+        ttk.Button(root, text="Eliminar Cliente", command=self.eliminar_cliente).grid(row=3, column=1, columnspan=1, padx=(0, 10), pady=10, sticky="EW")
+
+        # Crear widgets para añadir y eliminar puntos
+        ttk.Label(root, text="Operaciones:").grid(row=0, column=2, columnspan=2, pady=10)
+        ttk.Label(root, text="Cantidad de Puntos:").grid(row=1, column=2, pady=5)
+        self.entry_cantidad_puntos = ttk.Entry(root)
+        self.entry_cantidad_puntos.grid(row=1, column=3, padx=(0, 10), pady=5, sticky="EW")
+
+        ttk.Button(root, text="Añadir Puntos", command=self.anadir_puntos).grid(row=2, column=2, pady=5, sticky="EW")
+        ttk.Button(root, text="Eliminar Puntos", command=self.eliminar_puntos).grid(row=2, column=3, padx=(0, 10), pady=5, sticky="EW")
+
+        # Crear cuadros de búsqueda
+        ttk.Label(root, text="Buscar:").grid(row=4, column=0, padx=(10, 0), pady=5, sticky="EW")
+        # ttk.Label(root, text="ID:").grid(row=5, column=0, pady=5)
+        # ttk.Label(root, text="Nombre:").grid(row=5, column=1, pady=5)
+        # ttk.Label(root, text="Teléfono:").grid(row=5, column=2, pady=5)
+
+        self.entry_buscar_id = ttk.Entry(root)
+        self.entry_buscar_nombre = ttk.Entry(root)
+        self.entry_buscar_telefono = ttk.Entry(root)
+
+        self.entry_buscar_id.grid(row=6, column=0, padx=(10, 0), pady=2, sticky="EW")
+        self.entry_buscar_nombre.grid(row=6, column=1, padx=2, pady=2, sticky="EW")
+        self.entry_buscar_telefono.grid(row=6, column=2, pady=2, sticky="EW")
 
         # Listar clientes
         self.tree = ttk.Treeview(root, columns=("ID", "Nombre", "Teléfono", "Puntos"), show="headings")
@@ -51,29 +74,7 @@ class ClienteApp:
         self.tree.heading("Teléfono", text="Teléfono")
         self.tree.heading("Puntos", text="Puntos")
         self.listar_clientes()
-        self.tree.grid(row=5, column=0, columnspan=2, pady=10, sticky="NSEW")
-
-        # Crear widgets para añadir y eliminar puntos
-        ttk.Label(root, text="Operaciones:").grid(row=6, column=0, columnspan=2, pady=10)
-        ttk.Button(root, text="Añadir Puntos", command=self.anadir_puntos).grid(row=8, column=0, pady=5, sticky="EW")
-        ttk.Button(root, text="Eliminar Puntos", command=self.eliminar_puntos).grid(row=8, column=1, pady=5, sticky="EW")
-
-        ttk.Label(root, text="Cantidad de Puntos:").grid(row=7, column=0, pady=5)
-        self.entry_cantidad_puntos = ttk.Entry(root)
-        self.entry_cantidad_puntos.grid(row=7, column=1, pady=5, sticky="EW")
-
-        # Crear cuadros de búsqueda
-        ttk.Label(root, text="Buscar por ID:").grid(row=9, column=0, pady=5)
-        ttk.Label(root, text="Buscar por Nombre:").grid(row=9, column=1, pady=5)
-        ttk.Label(root, text="Buscar por Teléfono:").grid(row=9, column=2, pady=5)
-
-        self.entry_buscar_id = ttk.Entry(root)
-        self.entry_buscar_nombre = ttk.Entry(root)
-        self.entry_buscar_telefono = ttk.Entry(root)
-
-        self.entry_buscar_id.grid(row=10, column=0, pady=5, sticky="EW")
-        self.entry_buscar_nombre.grid(row=10, column=1, pady=5, sticky="EW")
-        self.entry_buscar_telefono.grid(row=10, column=2, pady=5, sticky="EW")
+        self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="NSEW")
 
         # Asignar eventos de teclado para activar los filtros
         self.entry_buscar_id.bind("<KeyRelease>", lambda event: self.filtrar_registros(event, column="ID"))
